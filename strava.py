@@ -11,30 +11,19 @@ def main(access_token):
 
   results = list(activities)
 
-  # activity = client.get_activity(results[0].id)
-
-  # print(activity.splits_metric)
-
+  best_times = []
   for result in results:
       activity = client.get_activity(result.id)
 
-      # best_efforts = activity.best_efforts
+      best_efforts = activity.best_efforts
 
-      # for be in best_efforts:
-      #   print be.elapsed_time
-
-      splits = activity.splits_metric
-      
-      if len(splits) > 5:
-        time = 0.0
-        distance = 0.0
-        for split in splits[:5]:
-          time += split.moving_time.days * 1440.0 + split.moving_time.seconds / 60.0
-          distance += float(split.distance)
-
-        minutes = floor(time)
-        seconds = (time - minutes) * 60.0
-        print("Distance: "+str(distance)+" Time: "+str(minutes)+":"+str(seconds)+" Calories: "+str(activity.calories))
+      for be in best_efforts:
+        if float(be.distance) > 4900 and float(be.distance) < 5100:
+          best_times.append(be.elapsed_time)
+    
+  best_times.sort()
+  for time in best_times:
+    print time
 
 if __name__ == "__main__":
 
